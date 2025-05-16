@@ -1,38 +1,911 @@
-.App {
-  text-align: center;
+/* src/App.css */
+:root {
+    --primary-color-light: #6200ea; /* Un morado vibrante */
+    --secondary-color-light: #03dac6; /* Un cyan */
+    --background-light: #f4f6f8;
+    --surface-light: #ffffff;
+    --on-surface-light: #2c3e50; /* Texto principal */
+    --on-surface-variant-light: #5a6a7a; /* Texto secundario */
+    --border-color-light: #e0e0e0;
+
+    --primary-color-dark: #bb86fc; /* Morado más claro para dark mode */
+    --secondary-color-dark: #03dac6; /* Mismo cyan, resalta bien */
+    --background-dark: #121212;
+    --surface-dark: #1e1e1e; /* Un gris oscuro para superficies como cards */
+    --on-surface-dark: #e0e0e0; /* Texto principal */
+    --on-surface-variant-dark: #a0a0a0; /* Texto secundario */
+    --border-color-dark: #333333;
+
+    --font-family: 'Poppins', 'Arial', sans-serif; /* Poppins es moderna, asegúrate de importarla */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.3s ease;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Importar Poppins (opcional, añadir a public/index.html o via @import) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    line-height: 1.6;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body.light {
+    background-color: var(--background-light);
+    color: var(--on-surface-light);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+body.dark {
+    background-color: var(--background-dark);
+    color: var(--on-surface-dark);
 }
 
-.App-link {
-  color: #61dafb;
+/* Estilos generales para elementos */
+a {
+    text-decoration: none;
+    transition: color var(--transition-speed);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body.light a { color: var(--primary-color-light); }
+body.dark a { color: var(--primary-color-dark); }
+body.light a:hover { color: var(--secondary-color-light); }
+body.dark a:hover { color: var(--secondary-color-dark); }
+
+
+button {
+    font-family: var(--font-family);
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+    font-weight: 500;
+}
+
+button:hover:not(:disabled) { /* Aplicar transform solo si no está deshabilitado */
+    transform: translateY(-2px);
+}
+
+.button-primary {
+    color: white;
+}
+body.light .button-primary { background-color: var(--primary-color-light); }
+body.dark .button-primary { background-color: var(--primary-color-dark); }
+body.light .button-primary:hover:not(:disabled) { background-color: #4b00b0; } /* Un poco más oscuro */
+body.dark .button-primary:hover:not(:disabled) { background-color: #a060eb; } /* Un poco más claro */
+
+
+.button-secondary {
+    background-color: transparent;
+}
+body.light .button-secondary {
+    border: 1px solid var(--primary-color-light);
+    color: var(--primary-color-light);
+}
+body.dark .button-secondary {
+    border: 1px solid var(--primary-color-dark);
+    color: var(--primary-color-dark);
+}
+body.light .button-secondary:hover:not(:disabled) { background-color: rgba(98, 0, 234, 0.1); }
+body.dark .button-secondary:hover:not(:disabled) { background-color: rgba(187, 134, 252, 0.1); }
+
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px; /* Ajuste de padding para mejor control */
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+body.light .navbar {
+    background-color: var(--surface-light);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--border-color-light);
+}
+body.dark .navbar {
+    background-color: var(--surface-dark);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border-color-dark);
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+body.light .navbar-logo { color: var(--primary-color-light); }
+body.dark .navbar-logo { color: var(--primary-color-dark); }
+
+.navbar-logo img {
+    height: 40px;
+}
+
+.navbar-search {
+    display: flex; /* Para alinear input y botón */
+    align-items: center;
+}
+
+.navbar-search input {
+    padding: 8px 12px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius); /* Redondear solo lado izquierdo */
+    min-width: 250px;
+    font-size: 0.95em;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    border-right: none; /* Quitar borde derecho para que se una con el botón */
+}
+body.light .navbar-search input {
+    border: 1px solid var(--border-color-light);
+    background-color: var(--background-light);
+    color: var(--on-surface-light);
+}
+body.dark .navbar-search input {
+    border: 1px solid var(--border-color-dark);
+    background-color: #2a2a2a;
+    color: var(--on-surface-dark);
+}
+body.light .navbar-search input:focus {
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 0 2px rgba(98, 0, 234, 0.2);
+}
+body.dark .navbar-search input:focus {
+    border-color: var(--primary-color-dark);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+}
+
+.navbar-search button {
+    padding: 8px 12px;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0; /* Redondear solo lado derecho */
+    font-size: 0.95em;
+    border: 1px solid; /* Añadir borde para consistencia */
+}
+body.light .navbar-search button {
+    background-color: var(--primary-color-light);
+    color: white;
+    border-color: var(--primary-color-light);
+}
+body.dark .navbar-search button {
+    background-color: var(--primary-color-dark);
+    color: var(--background-dark); /* Color de texto para buen contraste */
+    border-color: var(--primary-color-dark);
+}
+body.light .navbar-search button:hover { background-color: #4b00b0; border-color: #4b00b0;}
+body.dark .navbar-search button:hover { background-color: #a060eb; border-color: #a060eb;}
+
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Reducido el gap para mejor ajuste */
+}
+
+.navbar-actions button, .navbar-actions .nav-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem; /* Para iconos */
+    padding: 8px;
+    border-radius: 50%; /* Botones redondos para iconos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Ancho fijo */
+    height: 40px; /* Alto fijo */
+}
+body.light .navbar-actions button, body.light .navbar-actions .nav-link { color: var(--on-surface-variant-light); }
+body.dark .navbar-actions button, body.dark .navbar-actions .nav-link { color: var(--on-surface-variant-dark); }
+
+body.light .navbar-actions button:hover, body.light .navbar-actions .nav-link:hover { background-color: rgba(0,0,0,0.05); }
+body.dark .navbar-actions button:hover, body.dark .navbar-actions .nav-link:hover { background-color: rgba(255,255,255,0.1); }
+
+
+.genre-dropdown {
+    position: relative;
+}
+.genre-dropdown button { /* Estilo específico para el botón del dropdown */
+    font-size: 0.9rem; /* Tamaño del texto "Géneros" */
+    padding: 8px 12px; /* Ajustar padding */
+    border-radius: var(--border-radius); /* Borde redondeado normal */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: auto; /* Permitir que el ancho se ajuste al contenido */
+    height: auto; /* Permitir que el alto se ajuste al contenido */
+}
+body.light .genre-dropdown button {
+    background-color: var(--surface-light);
+    color: var(--on-surface-light);
+    border: 1px solid var(--border-color-light);
+}
+body.dark .genre-dropdown button {
+    background-color: var(--surface-dark);
+    color: var(--on-surface-dark);
+    border: 1px solid var(--border-color-dark);
+}
+body.light .genre-dropdown button:hover { background-color: var(--background-light); }
+body.dark .genre-dropdown button:hover { background-color: #2a2a2a; }
+
+.genre-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    border-radius: var(--border-radius);
+    padding: 10px 0;
+    z-index: 1001;
+    margin-top: 8px; /* Espacio entre botón y dropdown */
+}
+body.light .genre-dropdown-content {
+    background-color: var(--surface-light);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--border-color-light);
+}
+body.dark .genre-dropdown-content {
+    background-color: var(--surface-dark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color-dark);
+}
+.genre-dropdown:hover .genre-dropdown-content,
+.genre-dropdown-content.open { /* Para control con JS */
+    display: block;
+}
+.genre-dropdown-content a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 0.95em;
+}
+body.light .genre-dropdown-content a { color: var(--on-surface-light); }
+body.dark .genre-dropdown-content a { color: var(--on-surface-dark); }
+
+body.light .genre-dropdown-content a:hover { background-color: var(--background-light); }
+body.dark .genre-dropdown-content a:hover { background-color: #2a2a2a; }
+
+
+.cart-button {
+    position: relative;
+}
+.cart-count {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: var(--secondary-color-light);
+    color: black; /* Para mejor contraste con cyan */
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Book Carousel / List - CON BOTONES */
+.book-carousel-wrapper { /* Contenedor principal de la sección del carrusel */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* La clase 'container' ya le da padding lateral y centrado */
+}
+
+.book-carousel-wrapper h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+body.light .book-carousel-wrapper h2 { color: var(--on-surface-light); }
+body.dark .book-carousel-wrapper h2 { color: var(--on-surface-dark); }
+
+.carousel-container {
+    position: relative; /* Necesario para posicionar los botones absolutamente */
+    margin: 0 -10px; /* Compensa un poco el padding de los botones para que se alineen mejor */
+}
+
+.carousel-content {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* Importante para el scroll programático suave */
+    gap: 20px; /* Espacio entre BookCards */
+    padding: 10px; /* Padding para que las sombras de las tarjetas no se corten y para espacio visual */
+    
+    /* Ocultar la barra de scroll nativa */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.carousel-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente el botón */
+    z-index: 10; /* Asegura que esté sobre el contenido del carrusel */
+    border: none;
+    border-radius: 50%; /* Botones redondos */
+    width: 44px; /* Tamaño del botón */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-speed), opacity var(--transition-speed), transform 0.2s ease-out, color var(--transition-speed), border-color var(--transition-speed);
+    font-size: 1.3rem; /* Tamaño del icono */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.carousel-button:hover:not(:disabled) {
+    transform: translateY(-50%) scale(1.05); /* Ligero efecto al pasar el mouse */
+}
+.carousel-button:active:not(:disabled) {
+    transform: translateY(-50%) scale(0.95);
+}
+
+
+body.light .carousel-button {
+    background-color: var(--surface-light);
+    color: var(--primary-color-light);
+    border: 1px solid var(--border-color-light);
+}
+body.light .carousel-button:hover:not(:disabled) {
+    background-color: var(--background-light);
+}
+
+body.dark .carousel-button {
+    background-color: var(--surface-dark);
+    color: var(--primary-color-dark);
+    border: 1px solid var(--border-color-dark);
+}
+body.dark .carousel-button:hover:not(:disabled) {
+    background-color: #2a2a2a; /* Un poco más claro que surface-dark */
+}
+
+.carousel-button.prev {
+    left: 0px; /* Posición del botón izquierdo */
+}
+
+.carousel-button.next {
+    right: 0px; /* Posición del botón derecho */
+}
+
+.carousel-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    /* box-shadow: none; */ /* Opcional: quitar sombra si está deshabilitado */
+}
+
+
+/* Book Card */
+.book-card {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    min-width: 220px; /* Ajusta para controlar cuántos se ven */
+    flex: 0 0 auto; /* Para que el flex no los encoja */
+}
+body.light .book-card {
+    background-color: var(--surface-light);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--border-color-light);
+}
+body.dark .book-card {
+    background-color: var(--surface-dark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color-dark);
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    /* Uso de & para anidar dentro del hover */
+    body.light & { box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+    body.dark & { box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+}
+
+.book-card-image-link { /* Asegurar que el link ocupe el espacio de la imagen */
+    display: block;
+}
+
+.book-card-image img {
+    width: 100%;
+    height: 280px; /* Altura fija para consistencia */
+    object-fit: cover; /* Cubre el espacio sin distorsionar */
+    display: block;
+}
+
+.book-card-content {
+    padding: 15px;
+}
+
+.book-card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Para títulos largos */
+    height: 1.3em; /* Aproximadamente una línea, ajustar según font-size y line-height */
+}
+body.light .book-card-title { color: var(--on-surface-light); }
+body.dark .book-card-title { color: var(--on-surface-dark); }
+
+.book-card-author {
+    font-size: 0.85em;
+    margin-bottom: 10px;
+    height: 1.1em; /* Para una línea de autor */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+body.light .book-card-author { color: var(--on-surface-variant-light); }
+body.dark .book-card-author { color: var(--on-surface-variant-dark); }
+
+
+.book-card-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+body.light .book-card-price { color: var(--primary-color-light); }
+body.dark .book-card-price { color: var(--primary-color-dark); }
+
+.book-card-actions {
+    display: flex;
+    gap: 10px;
+}
+.book-card-actions button, .book-card-actions a.button-secondary { /* Aplicar a ambos */
+    flex-grow: 1;
+    font-size: 0.9em;
+    padding: 8px 12px;
+    display: flex; /* Para alinear icono y texto */
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Espacio entre icono y texto */
+}
+
+
+/* Book Detail Page */
+.book-detail-page {
+    padding: 30px 0; /* Usar el padding del container para los lados */
+}
+.book-detail-page > .button-secondary { /* Estilo para el botón "Volver" */
+    margin-bottom: 20px;
+    display: inline-flex; /* Para que el botón no ocupe todo el ancho */
+    align-items: center;
+}
+.book-detail-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start; /* Alinea arriba si la descripción es larga */
+}
+.book-detail-image img {
+    max-width: 400px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+.book-detail-info {
+    flex: 1;
+}
+.book-detail-info h1 {
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+.book-detail-info .author {
+    font-size: 1.2em;
+    margin-bottom: 10px; /* Reducido para acercar al género */
+}
+body.light .book-detail-info .author { color: var(--on-surface-variant-light); }
+body.dark .book-detail-info .author { color: var(--on-surface-variant-dark); }
+
+.book-detail-info .genre {
+    font-size: 1em;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+body.light .book-detail-info .genre { color: var(--on-surface-variant-light); }
+body.dark .book-detail-info .genre { color: var(--on-surface-variant-dark); }
+
+.book-detail-info .price {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+body.light .book-detail-info .price { color: var(--primary-color-light); }
+body.dark .book-detail-info .price { color: var(--primary-color-dark); }
+
+.book-detail-info .description {
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+.book-detail-actions button {
+    padding: 12px 25px;
+    font-size: 1em;
+    display: inline-flex; /* Para alinear icono y texto */
+    align-items: center;
+    gap: 8px; /* Espacio entre icono y texto */
+}
+
+/* Cart Modal */
+.cart-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed), visibility var(--transition-speed);
+}
+.cart-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.cart-modal {
+    padding: 25px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 600px; /* Un poco más ancho para items del carrito */
+    max-height: 85vh; /* Un poco más de altura */
+    overflow-y: auto;
+    transform: scale(0.95);
+    transition: transform var(--transition-speed);
+}
+.cart-modal-overlay.open .cart-modal {
+    transform: scale(1);
+}
+body.light .cart-modal {
+    background-color: var(--surface-light);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+body.dark .cart-modal {
+    background-color: var(--surface-dark);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.cart-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid;
+    padding-bottom: 15px;
+}
+body.light .cart-modal-header { border-color: var(--border-color-light); }
+body.dark .cart-modal-header { border-color: var(--border-color-dark); }
+
+.cart-modal-header h2 {
+    margin: 0;
+    font-size: 1.6em;
+}
+.cart-modal-header .close-button {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    padding: 5px; /* Añadir padding para área de clic */
+    line-height: 1; /* Para mejor alineación de la X */
+}
+body.light .cart-modal-header .close-button { color: var(--on-surface-variant-light); }
+body.dark .cart-modal-header .close-button { color: var(--on-surface-variant-dark); }
+.cart-modal-header .close-button:hover {
+    body.light & { color: var(--on-surface-light); }
+    body.dark & { color: var(--on-surface-dark); }
+}
+
+
+.cart-item {
+    display: grid; /* Usar grid para mejor alineación */
+    grid-template-columns: auto 1fr auto auto auto; /* img, details, qty, price, remove */
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+.cart-item:not(:last-child) {
+    border-bottom: 1px solid;
+}
+body.light .cart-item:not(:last-child) { border-color: var(--border-color-light); }
+body.dark .cart-item:not(:last-child) { border-color: var(--border-color-dark); }
+
+
+.cart-item-image img {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.cart-item-details {
+    flex-grow: 1; /* Mantenido por si se vuelve a flex */
+}
+.cart-item-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    font-weight: 500;
+}
+.cart-item-details p {
+    margin: 0;
+    font-size: 0.9em;
+}
+body.light .cart-item-details p { color: var(--on-surface-variant-light); }
+body.dark .cart-item-details p { color: var(--on-surface-variant-dark); }
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.cart-item-quantity input {
+    width: 40px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+body.light .cart-item-quantity input {
+    border: 1px solid var(--border-color-light);
+    background: var(--background-light);
+    color: var(--on-surface-light);
+}
+body.dark .cart-item-quantity input {
+    border: 1px solid var(--border-color-dark);
+    background: #2a2a2a;
+    color: var(--on-surface-dark);
+}
+
+.cart-item-quantity button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+    min-width: 28px; /* Para que + y - tengan el mismo ancho */
+}
+
+.cart-item-subtotal { /* Nueva clase para el subtotal del item */
+    font-weight: 500;
+    text-align: right;
+    min-width: 70px; /* Para alinear los subtotales */
+}
+
+.cart-item-remove button {
+    background: none;
+    border: none;
+    color: #e74c3c; /* Rojo para eliminar */
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+}
+.cart-item-remove button:hover {
+    color: #c0392b; /* Rojo más oscuro al hover */
+}
+
+.cart-total {
+    margin-top: 25px;
+    text-align: right;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.cart-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 30px 0;
+    font-size: 1.1em;
+}
+body.light .empty-cart { color: var(--on-surface-variant-light); }
+body.dark .empty-cart { color: var(--on-surface-variant-dark); }
+
+
+/* Footer */
+.footer {
+    padding: 40px 5%; /* Padding general */
+    margin-top: 50px;
+    text-align: center;
+}
+body.light .footer {
+    background-color: var(--surface-light);
+    border-top: 1px solid var(--border-color-light);
+    color: var(--on-surface-variant-light);
+}
+body.dark .footer {
+    background-color: var(--surface-dark);
+    border-top: 1px solid var(--border-color-dark);
+    color: var(--on-surface-variant-dark);
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto; /* Centrar el contenido del footer */
+}
+.footer h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+body.light .footer h3 { color: var(--on-surface-light); }
+body.dark .footer h3 { color: var(--on-surface-dark); }
+
+.footer p {
+    font-size: 0.95em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+.footer-socials {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.footer-socials a {
+    font-size: 1.8em;
+    margin: 0 12px;
+    transition: transform 0.2s ease;
+}
+.footer-socials a:hover {
+    transform: scale(1.1);
+}
+body.light .footer-socials a { color: var(--primary-color-light); }
+body.dark .footer-socials a { color: var(--primary-color-dark); }
+
+.footer-copyright {
+    margin-top: 30px;
+    font-size: 0.85em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Ajustes para tablets y pantallas medianas */
+    .navbar-search input {
+        min-width: 180px;
+    }
+    .book-detail-container {
+        gap: 30px;
+    }
+    .book-detail-image img {
+        max-width: 300px;
+    }
+    .book-detail-info h1 {
+        font-size: 2em;
+    }
+}
+
+
+@media (max-width: 768px) { /* Ajustes para móviles */
+    .navbar {
+        flex-direction: column;
+        gap: 15px; /* Aumentado el gap para mejor separación */
+        padding: 15px 5%; /* Asegurar padding consistente */
+    }
+    .navbar-logo {
+        /* Podría ser buena idea centrarlo si es la única fila */
+    }
+    .navbar-search {
+        width: 100%; /* Ocupar todo el ancho disponible */
+    }
+    .navbar-search input {
+        min-width: 0; /* Quitar min-width */
+        flex-grow: 1; /* Permitir que el input crezca */
+    }
+    .navbar-actions {
+        width: 100%; /* Ocupar todo el ancho */
+        justify-content: space-around; /* Distribuir los iconos */
+        gap: 5px; /* Reducir gap entre iconos */
+    }
+    .genre-dropdown button {
+        font-size: 0.85rem; /* Texto más pequeño en móvil */
+    }
+
+    .container {
+        width: 95%; /* Más ancho en móviles */
+        padding: 0 10px;
+    }
+
+    .book-detail-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .book-detail-image img {
+        max-width: 80%; /* Usar porcentaje para adaptarse mejor */
+        max-height: 350px; /* Limitar altura también */
+    }
+    .book-detail-info {
+        text-align: center; /* Centrar info en móvil */
+    }
+    .book-detail-info h1 { font-size: 1.8em; }
+    .book-detail-actions {
+        display: flex;
+        justify-content: center; /* Centrar botón de añadir al carrito */
+    }
+
+
+    .carousel-container {
+        margin: 0; /* Quitar el margen negativo en móvil si no se ve bien */
+    }
+    .carousel-button {
+        width: 38px; /* Ligeramente más grande para tocar */
+        height: 38px;
+        font-size: 1rem;
+    }
+    .carousel-button.prev {
+        left: 5px; /* Más adentro en móviles para que no se corten */
+    }
+    .carousel-button.next {
+        right: 5px;
+    }
+    .book-card {
+        min-width: 160px; /* Más pequeño en móvil */
+    }
+    .book-card-image img {
+        height: 200px; /* Reducir altura de imagen en tarjeta */
+    }
+    .book-card-title {
+        font-size: 1em;
+    }
+    .book-card-author {
+        font-size: 0.8em;
+    }
+
+    .cart-modal {
+        width: 95%;
+        max-height: 90vh;
+        padding: 20px;
+    }
+    .cart-item {
+        grid-template-columns: auto 1fr auto; /* Simplificar grid: img, details, remove */
+        grid-template-areas: /* Definir áreas para reordenar */
+            "image details remove"
+            "image quantity subtotal";
+        row-gap: 10px; /* Espacio entre filas del item */
+    }
+    .cart-item-image { grid-area: image; }
+    .cart-item-details { grid-area: details; }
+    .cart-item-quantity { grid-area: quantity; justify-self: start; /* Alinear a la izquierda debajo de details */}
+    .cart-item-subtotal { grid-area: subtotal; justify-self: end; /* Alinear a la derecha debajo de details */}
+    .cart-item-remove { grid-area: remove; align-self: center;}
+}
+
+@media (max-width: 480px) { /* Ajustes aún más finos para pantallas muy pequeñas */
+    .navbar-logo span {
+        font-size: 1.2em; /* Reducir tamaño del nombre de la tienda */
+    }
+    .navbar-logo img {
+        height: 35px;
+    }
+    .navbar-actions button, .navbar-actions .nav-link {
+        font-size: 1.1rem; /* Iconos ligeramente más pequeños */
+        width: 36px;
+        height: 36px;
+    }
+    .book-card {
+        min-width: 140px; /* Tarjetas aún más pequeñas */
+    }
+    .book-card-image img {
+        height: 180px;
+    }
+    .book-card-actions button, .book-card-actions a.button-secondary {
+        font-size: 0.85em;
+        padding: 6px 10px;
+    }
 }
