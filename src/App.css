@@ -249,7 +249,7 @@ body.dark .genre-dropdown button:hover { background-color: #2a2a2a; }
     border-radius: var(--border-radius);
     padding: 10px 0;
     z-index: 1001;
-    margin-top: 8px; /* Espacio entre botón y dropdown */
+    margin-top: 0px; /* Espacio entre botón y dropdown */
 }
 body.light .genre-dropdown-content {
     background-color: var(--surface-light);
